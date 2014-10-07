@@ -19,6 +19,7 @@ class AppKernel extends Kernel
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new Charczuk\LibraryBundle\CharczukLibraryBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

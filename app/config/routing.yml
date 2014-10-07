@@ -1,0 +1,5 @@
+charczuk_library:
+    resource: "@CharczukLibraryBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
