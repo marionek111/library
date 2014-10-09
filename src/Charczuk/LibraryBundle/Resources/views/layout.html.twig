@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset={{ _charset }}"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="robots" content="noindex,nofollow" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>{% block title %}Unset{% endblock %}</title>
+
+    <!-- Bootstrap -->
+    <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet" media="screen">
+
+    <!-- HTML5 Shim and Respond.js add IE8 support of HTML5 elements and media queries -->
+    {% include 'BraincraftedBootstrapBundle::ie8-support.html.twig' %}
+
+    <!-- View added -->
+    {% block head %}{% endblock %}
+</head>
+
+<body>
+<div id="content">
+    {% for flashMessage in app.session.flashbag.get('notice') %}
+        <div class="flash-message">
+            <em>Notice</em>: {{ flashMessage }}
+        </div>
+    {% endfor %}
+
+    <div class="header clear-fix">
+        {% block content_header %}{% endblock %}
+    </div>
+
+    <div class="sf-reset">
+        <div class="block">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+</div>
+
+<!-- jQuery (necessary for Bootstraps JavaScript plugins) -->
+<script src="{{ asset('js/jquery.js') }}"></script>
+<!-- Include all JavaScripts, compiled by Assetic -->
+<script src="{{ asset('js/bootstrap.js') }}"></script>
+<!-- Include from @ChraczukLibraryBundle/Resource -->
+{% javascripts '@CharczukLibraryBundle/Resources/public/js/*'  %}
+    <script type="text/javascript" src="{{ aeest_url }}" />
+{% endjavascripts %}
+</body>
+</html>

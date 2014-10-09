@@ -20,6 +20,8 @@ class AppKernel extends Kernel
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Charczuk\LibraryBundle\CharczukLibraryBundle(),
+            new Charczuk\Library\BackendBundle\LibraryBackendBundle(),
+            new Charczuk\Library\FrontendBundle\LibraryFrontendBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

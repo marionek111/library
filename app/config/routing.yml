@@ -1,5 +1,15 @@
+library_frontend:
+    resource: "@LibraryFrontendBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+library_backend:
+    resource: "@LibraryBackendBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 charczuk_library:
     resource: "@CharczukLibraryBundle/Controller/"
     type:     annotation
-    prefix:   /
+    prefix:   /lib
 
