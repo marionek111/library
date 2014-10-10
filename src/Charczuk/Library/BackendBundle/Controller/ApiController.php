@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 /**
  * @Route("/api")
  */
-class ApiController extends AppController
+class ApiController extends ApplicationController
 {
     /**
      * @Route("/hello")
