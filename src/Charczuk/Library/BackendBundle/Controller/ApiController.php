@@ -2,15 +2,15 @@
 
 namespace Charczuk\Library\BackendBundle\Controller;
 
+use Charczuk\Library\BackendBundle\Entity\Books;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * @Route("/api")
  */
-class ApiController extends Controller
+class ApiController extends AppController
 {
     /**
      * @Route("/hello")
@@ -25,28 +25,98 @@ class ApiController extends Controller
      */
     public function booksAction()
     {
-        $arrToEncode = array(array(
-            'id'=>1,
-            'name'=>"Dynamo",
-            'author'=>"Dynamo",
-            'yearRelease'=>2012,
-            'publisher'=>"WSIP",
-            'description'=>"Nauka Magii i sztuczek magicznych"
-        ), array(
-            'id'=>2,
-            'name'=>"Java EE",
-            'author'=>"Jendrock Evans",
-            'yearRelease'=>2005,
-            'publisher'=>"Helion",
-            'description'=>"Podstawy programowania obiektowego w języku JAVA EE"
-        ), array(
-            'id'=>3,
-            'name'=>"Cyfrowa Twierdza",
-            'author'=>"Dan Brown",
-            'yearRelease'=>1997,
-            'publisher'=>"Pióro",
-            'description'=>"Opowiesć o superkomputerze który potrafi złamać karzdy szyfr który natrafił na ściane nie do przebicia"
-        ));
+        $repositoryBook = $this->getDoctrine()->getRepository('LibraryBackendBundle:Books');
+        $bookRows = $repositoryBook->findAll();
+
+        if (!$bookRows) {
+            throw $this->createNotFoundException("No books found");
+        }
+
+        $arrToEncode = array();
+        foreach ($bookRows as $book) {
+            $arrToEncode[] = $this->bookToArray($book);
+        }
+
         return new JsonResponse($arrToEncode);
+    }
+
+    /**
+     * @Route("/addBook")
+     */
+    public function addBookAction()
+    {
+        if(! $this->hasParams(array('data'))) throw new \Exception('One or more required parameters not Found');
+        $data = $this->getRequest()->request->get('data');
+
+        if ($this->getRequest()->isMethod('POST')) {
+            $book = new Books();
+            $book->setName($data['name'])
+                ->setAuthor($data['author'])
+                ->setYearRelease($data['yearRelease'])
+                ->setPublisher($data['publisher'])
+                ->setDescription($data['description']);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($book);
+            $em->flush();
+
+        }
+
+        return new JsonResponse(self::bookToArray($book));
+    }
+
+    /**
+     * @Route("/editBook/{id}")
+     */
+    public function editBookAction($id)
+    {
+        if(! $this->hasParams(array('data'))) throw new \Exception('One or more required parameters not Found');
+
+        $em = $this->getDoctrine()->getManager();
+        $bookRow = $em->getRepository('LibraryBackendBundle:Books')->find($id);
+        if (!$bookRow) {
+            throw $this->createNotFoundException('No book found for id '.$id);
+        }
+
+        $data = $this->getRequest()->request->get('data');
+
+        $bookRow->setName($data['name'])
+            ->setAuthor($data['author'])
+            ->setYearRelease($data['yearRelease'])
+            ->setPublisher($data['publisher'])
+            ->setDescription($data['description']);
+        $em->flush();
+
+        return new JsonResponse(self::bookToArray($bookRow));
+    }
+
+    /**
+     * @Route("/removeBook/{id}")
+     */
+    public function removeBookAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $bookRow = $em->getRepository('LibraryBackendBundle:Books')->find($id);
+        if (!$bookRow) {
+            throw $this->createNotFoundException('No book found for id '.$id);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($bookRow);
+        $em->flush();
+
+        return new JsonResponse($bookRow);
+    }
+
+    public static function bookToArray($bookRow)
+    {
+        return array(
+            'id' => $bookRow->getId(),
+            'name' => $bookRow->getName(),
+            'author' => $bookRow->getAuthor(),
+            'yearRelease' => $bookRow->getYearRelease(),
+            'publisher' => $bookRow->getPublisher(),
+            'description' => $bookRow->getDescription()
+        );
     }
 }

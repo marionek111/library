@@ -19,7 +19,6 @@ class AppKernel extends Kernel
             new Braincrafted\Bundle\BootstrapBundle\BraincraftedBootstrapBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new Charczuk\LibraryBundle\CharczukLibraryBundle(),
             new Charczuk\Library\BackendBundle\LibraryBackendBundle(),
             new Charczuk\Library\FrontendBundle\LibraryFrontendBundle(),
         );

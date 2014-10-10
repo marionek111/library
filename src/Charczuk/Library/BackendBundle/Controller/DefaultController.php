@@ -4,7 +4,6 @@ namespace Charczuk\Library\BackendBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -22,7 +21,6 @@ class DefaultController extends Controller
 //        {
 //            throw new HttpException(400, "Error User Not Found");
 //        }
-
         return new JsonResponse(array('salt' => "pw4qmcjcp1wog0wcsoosowg8wg4kg8k"));
     }
 
@@ -38,7 +36,6 @@ class DefaultController extends Controller
 //        {
 //            throw new HttpException(400, "Error User Not Found");
 //        }
-
         return new JsonResponse(array('username' => array('salt' => "pw4qmcjcp1wog0wcsoosowg8wg4kg8k")));
     }
 
