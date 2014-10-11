@@ -39,19 +39,24 @@
                     <!-- Review Form -->
                     <h4>Edit a Book</h4>
                     <fieldset class="form-group">
-                        <input ng-model="book.name" type="text" class="form-control" placeholder="Title" title="Title" required/>
+                        <input ng-model="book.name" type="text" name="name" class="form-control" placeholder="Title" title="Title" required/>
+                        <p ng-show="editForm.name.$invalid && !addForm.name.$pristine" class="help-block">Title is required.</p>
                     </fieldset>
                     <fieldset class="form-group">
-                        <input ng-model="book.author" type="text" class="form-control" placeholder="Author" title="Author" required/>
+                        <input ng-model="book.author" type="text" name="author" class="form-control" placeholder="Author" title="Author" required/>
+                        <p ng-show="editForm.author.$invalid && !addForm.author.$pristine" class="help-block">Author name is required.</p>
                     </fieldset>
                     <fieldset class="form-group">
-                        <input ng-model="book.yearRelease" type="number" class="form-control" placeholder="Year release" title="Year release" required/>
+                        <input ng-model="book.yearRelease" type="number" name="yearRelease" ng-minlength="0" ng-maxlength="{{ "now"|date("Y") }}" class="form-control" placeholder="Year release" title="Year release" required/>
+                        <p ng-show="editForm.yearRelease.$error.integer">This year release is not valid number!</p>
+                        <p ng-show="editForm.yearRelease.$error.min || addForm.yearRelease.$error.max">The year release value must be in range 1000 to {{ "now"|date("Y") }}!</p>
                     </fieldset>
                     <fieldset class="form-group">
-                        <input ng-model="book.publisher" type="text" class="form-control" placeholder="Publisher" title="Publisher" required/>
+                        <input ng-model="book.publisher" type="text" name="publisher" class="form-control" placeholder="Publisher" title="Publisher" required/>
+                        <p ng-show="editForm.publisher.$invalid && !addForm.publisher.$pristine" class="help-block">Publisher is required.</p>
                     </fieldset>
                     <fieldset class="form-group">
-                        <textarea ng-model="book.description" class="form-control" placeholder="Write a short review of the product..." title="Review"></textarea>
+                        <textarea ng-model="book.description" name="description" class="form-control" placeholder="Write a short review of the product..." title="Review"></textarea>
                     </fieldset>
                     <fieldset class="form-group">
                         <input type="submit" class="btn btn-primary pull-right" value="Edit book" />
@@ -64,26 +69,31 @@
     <div class="well">
         <div class="row">
             <div class="col-md-12">
-                <form name="reviewForm" ng-controller="BookController as bookCtrl" ng-submit="reviewForm.$valid && bookCtrl.addBook(library)" novalidate>
+                <form name="addForm" ng-controller="BookController as bookCtrl" ng-submit="addForm.$valid && bookCtrl.addBook(library,addForm)" novalidate>
                     <!-- Review Form -->
                     <h4>Add a Book</h4>
                     <fieldset class="form-group">
-                        <input ng-model="bookCtrl.book.name" type="text" class="form-control" placeholder="Title" title="Title" required/>
+                        <input ng-model="bookCtrl.book.name" type="text" name="name" class="form-control" placeholder="Title" title="Title" required/>
+                        <p ng-show="addForm.name.$invalid && !addForm.name.$pristine" class="help-block">Title is required.</p>
                     </fieldset>
                     <fieldset class="form-group">
-                        <input ng-model="bookCtrl.book.author" type="text" class="form-control" placeholder="Author" title="Author" required/>
+                        <input ng-model="bookCtrl.book.author" type="text" name="author" class="form-control" placeholder="Author" title="Author" required/>
+                        <p ng-show="addForm.author.$invalid && !addForm.author.$pristine" class="help-block">Author name is required.</p>
                     </fieldset>
                     <fieldset class="form-group">
-                        <input ng-model="bookCtrl.book.yearRelease" type="number" class="form-control" placeholder="Year release" title="Year release" required/>
+                        <input ng-model="bookCtrl.book.yearRelease" type="number" name="yearRelease" min="1000" max="{{ "now"|date("Y") }}" class="form-control" placeholder="Year release" title="Year release" required/>
+                        <p ng-show="addForm.yearRelease.$error.integer">This year release is not valid number!</p>
+                        <p ng-show="addForm.yearRelease.$error.min || addForm.yearRelease.$error.max">The year release value must be in range 1000 to {{ "now"|date("Y") }}!</p>
                     </fieldset>
                     <fieldset class="form-group">
-                        <input ng-model="bookCtrl.book.publisher" type="text" class="form-control" placeholder="Publisher" title="Publisher" required/>
+                        <input ng-model="bookCtrl.book.publisher" type="text" name="publisher" class="form-control" placeholder="Publisher" title="Publisher" required/>
+                        <p ng-show="addForm.publisher.$invalid && !addForm.publisher.$pristine" class="help-block">Publisher is required.</p>
                     </fieldset>
                     <fieldset class="form-group">
-                        <textarea ng-model="bookCtrl.book.description" class="form-control" placeholder="Write a short review of the product..." title="Review"></textarea>
+                        <textarea ng-model="bookCtrl.book.description" class="form-control" name="description" placeholder="Write a short review of the product..." title="Review"></textarea>
                     </fieldset>
                     <fieldset class="form-group">
-                        <input type="submit" class="btn btn-primary pull-right" value="Add book" />
+                        <input type="submit" class="btn btn-primary pull-right" value="Add book"  ng-disabled="addForm.$invalid" />
                     </fieldset>
                 </form>
             </div>

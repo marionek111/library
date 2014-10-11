@@ -4,7 +4,7 @@
 
 var app = angular.module('myApp.controllers', []);
 
-app.controller('LibraryController', ['$http',function($http) {
+app.controller('LibraryController', ['$http','$scope',function($http, $scope) {
     var library = this;
     library.books = [];
     this.booksBackup = {};
@@ -13,9 +13,19 @@ app.controller('LibraryController', ['$http',function($http) {
         library.books = data;
     });
 
-    this.addBook = function(book){
+    this.addBook = function(book, form){
         $http.post('/api/addBook', {data: book}).success(function(data, status) {
             library.books.push(data);
+            form.$setPristine()
+
+//            $scope.addForm.$setPristine();
+//            $scope.addForm.$setPristine();
+//            $scope.addForm.$setPristine();
+
+//            $('form[name=addForm] input, form[name=addForm] textarea').each(function(){
+//                $(this).removeClass( "ng-dirty  ng-invalid ng-invalid-required" );
+//                $(this).addClass("ng-pristine ng-valid");
+//            });
         });
     }
 
@@ -54,8 +64,8 @@ app.controller('LibraryController', ['$http',function($http) {
 app.controller('BookController', function() {
     this.book = {};
 
-    this.addBook = function(library) {
-        library.addBook(this.book);
+    this.addBook = function(library, form) {
+        library.addBook(this.book, form);
         this.book = {};
     }
 })
